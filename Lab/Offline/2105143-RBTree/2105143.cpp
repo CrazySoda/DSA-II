@@ -406,8 +406,8 @@ void clear_helper(ElementPtr x){
 int main(){
     RedBlackTree rbt;
     string prompt;
-    //freopen("input.txt", "r", stdin);
-    //freopen("output.txt", "w", stdout);
+    freopen("input.txt", "r", stdin);
+    freopen("output.txt", "w", stdout);
     while(getline(cin, prompt)){
         istringstream iss(prompt);
         string command;
