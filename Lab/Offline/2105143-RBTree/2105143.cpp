@@ -91,7 +91,27 @@ void clear_helper(ElementPtr x){
     void insertFix(ElementPtr k){
         ElementPtr uncle;
         while (k->parent->color == 1){
-            if(k->parent == k->parent->parent->right){
+             if(k->parent == k->parent->parent->left){
+                //parent is left child
+                //uncle is right child
+                uncle = k->parent->parent->right;
+                if(uncle->color == 1){
+                    uncle->color = 0;
+                    k->parent->color = 0;
+                    k->parent->parent->color=1;
+                    k = k->parent->parent;
+                }else{
+                    if(k == k->parent->right){
+                        k = k->parent;
+                        leftRotate(k);
+                    }
+                    k->parent->color = 0;
+                    k->parent->parent->color = 1;
+                    rightRotate(k->parent->parent);
+                }
+            }else{
+            //parent is right child
+            //uncle is left child
                 uncle = k->parent->parent->left;
                 if(uncle->color == 1){
                     uncle->color = 0;
@@ -108,22 +128,6 @@ void clear_helper(ElementPtr x){
                     k->parent->color =0;
                     k->parent->parent->color = 1;
                     leftRotate(k->parent->parent);
-                }
-            } else {
-                uncle = k->parent->parent->right;
-                if(uncle->color == 1){
-                    uncle->color = 0;
-                    k->parent->color = 0;
-                    k->parent->parent->color=1;
-                    k = k->parent->parent;
-                }else{
-                    if(k == k->parent->right){
-                        k = k->parent;
-                        leftRotate(k);
-                    }
-                    k->parent->color = 0;
-                    k->parent->parent->color = 1;
-                    rightRotate(k->parent->parent);
                 }
             }
             if(k==root){
@@ -166,13 +170,14 @@ void clear_helper(ElementPtr x){
         ElementPtr toDlt = TNULL;
         ElementPtr x,successor;
         while(Elem != TNULL){
-            if(Elem->key == key){
-                toDlt = Elem;
-            }
+            
             if(Elem->key <= key){
                 Elem = Elem->right;
             } else {
                 Elem = Elem->left;
+            }
+            if(Elem->key == key){
+                toDlt = Elem;
             }
         }
         if(toDlt == TNULL){
@@ -212,8 +217,41 @@ void clear_helper(ElementPtr x){
     void eraseFix(ElementPtr elem){
         ElementPtr sibling;
         while(elem!=root && elem->color == 0){
-            //elem is left child
-            if(elem == elem->parent->left){
+            if(elem == elem->parent->right){
+                //elem is right child
+                sibling = elem->parent->left;
+                //Sibling->Red
+                //elem asks parent to calm sibling down
+                if(sibling->color ==1){
+                    sibling->color = 0;
+                    elem->parent->color = 1 ;
+                    rightRotate(elem->parent);
+                }
+                //Sibling->Black
+                if(sibling->left->color == 0 && sibling->right->color == 0){
+                    sibling->color =1;
+                    elem = elem->parent;
+                }else{
+                    //near child is red
+                    //make near child black 
+                    //make sibling red
+                    //rotate sibling to left
+                    //now sibling is the far red child
+                    if(sibling->left->color == 0){
+                        sibling->right->color = 0;
+                        sibling->color = 1;
+                        leftRotate(sibling);
+                        sibling = elem->parent->left;
+                    }
+                    //swap color and rotate
+                    sibling->color = elem->parent->color;
+                    elem->parent->color = 0;
+                    sibling->left->color = 0;
+                    rightRotate(elem->parent);
+                    elem = root;
+                }
+            }else{
+                //elem is right child
                 sibling = elem->parent->right;
                 //Sibling->Red
                 if(sibling->color == 1){
@@ -244,38 +282,6 @@ void clear_helper(ElementPtr x){
                     elem->parent->color = 0;
                     sibling->right->color = 0;
                     leftRotate(elem->parent);
-                    elem = root;
-                }
-            }else{
-                sibling = elem->parent->left;
-                //Sibling->Red
-                //elem asks parent to calm sibling down
-                if(sibling->color ==1){
-                    sibling->color = 0;
-                    elem->parent->color = 1 ;
-                    rightRotate(elem->parent);
-                }
-                //Sibling->Black
-                if(sibling->left->color == 0 && sibling->right->color == 0){
-                    sibling->color =1;
-                    elem = elem->parent;
-                }else{
-                    //near child is red
-                    //make near child black 
-                    //make sibling red
-                    //rotate sibling to left
-                    //now sibling is the far red child
-                    if(sibling->left->color == 0){
-                        sibling->right->color = 0;
-                        sibling->color = 1;
-                        leftRotate(sibling);
-                        sibling = elem->parent->left;
-                    }
-                    //swap color and rotate
-                    sibling->color = elem->parent->color;
-                    elem->parent->color = 0;
-                    sibling->left->color = 0;
-                    rightRotate(elem->parent);
                     elem = root;
                 }
             }
