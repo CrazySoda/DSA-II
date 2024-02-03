@@ -8,8 +8,8 @@
       "args": [],
       "stopAtEntry": false,
       "externalConsole": true,
-      "cwd": "d:/DSA-II/Lab/Offline/2105143-RBTree",
-      "program": "d:/DSA-II/Lab/Offline/2105143-RBTree/build/Debug/outDebug",
+      "cwd": "d:/DSA-II/Lab/Offline/Misc",
+      "program": "d:/DSA-II/Lab/Offline/Misc/build/Debug/outDebug",
       "MIMode": "gdb",
       "miDebuggerPath": "gdb",
       "setupCommands": [

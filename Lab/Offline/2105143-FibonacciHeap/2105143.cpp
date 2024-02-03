@@ -34,7 +34,9 @@ class Node{
     }
 };
 
+class FibHeap{
 
+};
 
 int main(){
     
