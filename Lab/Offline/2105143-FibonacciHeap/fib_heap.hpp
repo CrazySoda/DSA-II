@@ -30,7 +30,13 @@ public:
     node *H;                       // max node
     node *valueArray[pos_max + 1]; // array to store the nodes
 
-
+    // Constructor
+    Fib_heap_max()
+    {
+        no_of_nodes = 0;
+        H = NULL;
+        fill(valueArray, valueArray + pos_max + 1, nullptr);
+    }
     // Helper Functions
     void Consolidate_helper(node *H1, node *y, node *z)
     {
@@ -172,7 +178,79 @@ public:
         return found;
     }
 
+    //print helpers
+    /* void print_queue(std::queue<node *> q)
+    {
+        while (!q.empty())
+        {
+            node *current = q.front();
+            q.pop();
+            print_node(current);
+            std::cout << " ";
+        }
+        std::cout << std::endl;
+    } *///used only to check the queue
+ 
+    void print_node(node *n)
+    {
+        cout << "( " << n->key << ", " << n->value << " )";
+    }
+    // print the heap
+
+    void print_sub_tree(node *temp){
+
+    }
+
+    void print_tree(node *temp){
+        queue<node *> q;
+        if(temp->parent == NULL && temp->child == NULL){
+            print_node(temp);
+            cout<<endl;
+            return;
+        }
+        //cout<<"1"<<endl;
+        print_node(temp);
+            cout<<"->";
+            
+            q = store_child_with_grandchild(temp->child);
+            print_sibling(temp->child);
+            cout<<endl;
+            //cout<<"1"<<endl;
+        while(!q.empty()){
+            //cout<<q.front()->key<<endl;
+            node *temp1 = q.front();
+            q.pop();
+            print_tree(temp1);
+        }
+        
+    }
+    queue<node *> store_child_with_grandchild(node *n){
+        queue<node *> q;
+        node *temp = n;
+        do{
+            if(temp->child != NULL){//jodi baccchq thake tahole queue te push korbe
+                q.push(temp);
+            }
+            temp = temp->right;
+        }while (temp != n);
+        return q;
+    }
+    // print all the sibling including node
+    void print_sibling(node *n)
+    {
+        node *temp = n;
+        do
+        {
+            print_node(temp);
+            temp = temp->right;
+        } while (temp != n);
+    }
+
+
+    //Main functions:
+
     // Initializes an empty Fib-Heap
+    //#############1##################
     Fib_heap_max *make_heap()
     {
         Fib_heap_max *H1 = new Fib_heap_max;
@@ -181,13 +259,13 @@ public:
         fill(H1->valueArray, H1->valueArray + pos_max + 1, nullptr);
         return H1;
     }
-
+    //#############2##################
     // Checks if the heap is empty
     bool is_empty(Fib_heap_max *H1)
     {
         return H1->H == NULL;
     }
-
+    //#############3##################
     // Inserts a node into the heap
     void insert(Fib_heap_max *H1, int key, int value)
     {
@@ -219,10 +297,11 @@ public:
             }
         }
         H1->no_of_nodes++;
-        cout << _new->key << " added" << endl;
+        /* cout << _new->key << " added" << endl; */
     }
 
-    // Extract min
+    // Extract max
+    //#############4##################
     node *extract_max(Fib_heap_max *H1)
     {
 
@@ -279,12 +358,13 @@ public:
             no_of_nodes--;
             // Update valueArray after deletion
             H1->valueArray[temp->value] = nullptr;
-            cout << temp->key << " removed" << endl;
+            /* cout << temp->key << " removed" << endl; */
             return temp;
         }
     }
 
     // Increase Key Operation
+    //#############5##################
     void increase_key(Fib_heap_max *H1, int value, int n_k)
     {
         if (H1->H == NULL)
@@ -315,10 +395,11 @@ public:
             H1->H = node_to_be_increased;
         }
         H1->valueArray[value] = node_to_be_increased;
-        cout << value << " increased to " << n_k << endl;
+        /* cout << value << " increased to " << n_k << endl; */
     }
 
     // Dlt function
+    //#############6##################
     void dlt(Fib_heap_max *H1, int value)
     {
         if (H1->H == NULL)
@@ -334,9 +415,9 @@ public:
         }
         increase_key(H1, value, pos_max);
         extract_max(H1);
-        cout << value << " deleted" << endl;
+        /* cout << value << " deleted" << endl; */
     }
-
+    //#############7##################
     Fib_heap_max *meld(Fib_heap_max *H1, Fib_heap_max *H2)
     {
         Fib_heap_max *H3 = make_heap();
@@ -352,74 +433,19 @@ public:
         }
         H3->no_of_nodes = H1->no_of_nodes + H2->no_of_nodes;
         return H3;
-        cout << "Heaps Merged" << endl;
+        /* cout << "Heaps Merged" << endl; */
     }
 
     // find max
+    //#############8##################
     node *find_max(Fib_heap_max *H1)
     {
         return H1->H;
     }
 
-    // print helpers and function
-
-    // print the gen queue
-    void print_queue(std::queue<node *> q)
-    {
-        while (!q.empty())
-        {
-            node *current = q.front();
-            q.pop();
-            print_node(current);
-            std::cout << " ";
-        }
-        std::cout << std::endl;
-    }
- 
-    void print_node(node *n)
-    {
-        cout << "( " << n->key << ", " << n->value << " )";
-    }
-    // print the heap
-
-    void print_sub_tree(node *temp){
-
-    }
-
-    void print_tree(node *temp){
-        queue<node *> q;
-        if(temp->parent == NULL && temp->child == NULL){
-            print_node(temp);
-            cout<<endl;
-            return;
-        }
-        //cout<<"1"<<endl;
-        print_node(temp);
-            cout<<"->";
-            
-            q = store_child_with_grandchild(temp->child);
-            print_sibling(temp->child);
-            cout<<endl;
-            //cout<<"1"<<endl;
-        while(!q.empty()){
-            //cout<<q.front()->key<<endl;
-            node *temp1 = q.front();
-            q.pop();
-            print_tree(temp1);
-        }
-        
-    }
-    queue<node *> store_child_with_grandchild(node *n){
-        queue<node *> q;
-        node *temp = n;
-        do{
-            if(temp->child != NULL){//jodi baccchq thake tahole queue te push korbe
-                q.push(temp);
-            }
-            temp = temp->right;
-        }while (temp != n);
-        return q;
-    }
+    //print the heap
+    //#############9##################
+    
     void print(Fib_heap_max *H1)
     {
         if(H1->H == NULL){
@@ -436,22 +462,9 @@ public:
                 temp = temp->right;
             } while (temp != H1->H);
         }
+        cout<<endl;
+        cout<<endl;
     }
-    
-    
-    
-
-    // print all the sibling including node
-    void print_sibling(node *n)
-    {
-        node *temp = n;
-        do
-        {
-            print_node(temp);
-            temp = temp->right;
-        } while (temp != n);
-    }
-    //test
     
     
 };

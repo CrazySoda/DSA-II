@@ -26,7 +26,14 @@ public:
     node *H;                       // max node
     node *valueArray[pos_max + 1]; // array to store the nodes
 
+    //constructor
+    Fib_heap_max()
+    {
+        no_of_nodes = 0;
+        H = NULL;
+        fill(valueArray, valueArray + pos_max + 1, nullptr);
 
+    }
     // Helper Functions
     void Consolidate_helper(node *H1, node *y, node *z)
     {
@@ -493,6 +500,7 @@ int main()
     secondHeap->insert(secondHeap, 30, 20);
     Fib_heap_max *mergedHeap = myHeap->meld(myHeap, secondHeap);
     node *maxNodeMergedHeap = mergedHeap->find_max(mergedHeap);
-    myHeap->print(mergedHeap);
+    mergedHeap->print(mergedHeap);
+    mergedHeap->extract_max(mergedHeap);
     return 0;
 }
