@@ -1,7 +1,6 @@
 #ifndef FIB_HEAP_HPP
 #define FIB_HEAP_HPP
 
-
 #include <bits/stdc++.h>
 using namespace std;
 #define pos_max 100000
@@ -38,6 +37,34 @@ public:
         fill(valueArray, valueArray + pos_max + 1, nullptr);
     }
     // Helper Functions
+    void copyValueArray(node *destination[], node *source[], int size)
+    {
+        for (int i = 0; i < size; i++)
+        {
+            destination[i] = source[i];
+        }
+    }
+    void print(Fib_heap_max *H1)
+    {
+        if (H1->H == NULL)
+        {
+            cout << "The heap is empty" << endl;
+        }
+        else
+        {
+            node *temp = H1->H;
+            int i = 0;
+            do
+            {
+                ++i;
+                cout << "Tree " << i << " : ";
+                print_tree(temp);
+                temp = temp->right;
+            } while (temp != H1->H);
+        }
+        cout << endl;
+        cout << endl;
+    }
     void Consolidate_helper(node *H1, node *y, node *z)
     {
         // pull the node from the root list
@@ -66,9 +93,11 @@ public:
         }
         z->degree++;
     }
+    
     // Function to consolidate the heap
     void Consolidate(node *H1)
     {
+        
         int D = 1 + log2(no_of_nodes);
         node *A[D];
         for (int i = 0; i < D; i++)
@@ -82,10 +111,12 @@ public:
         int d;
         do
         {
+            
             d = x->degree;
-            //if there is a node with the same degree
+            // if there is a node with the same degree
             while (A[d] != NULL)
             {
+                
                 y = A[d];
                 // if the joining node is larger just swap the values
                 if (y->key > x->key)
@@ -100,14 +131,21 @@ public:
                     H1 = x;
                 }
                 Consolidate_helper(H1, y, x);
+                if(x->right == x){
+                    H1 == x;
+                }
                 A[d] = NULL;
                 d++;
+                x->degree = d;
             }
+            
             // store the node in the array if/if not there is no node with the same degree
             A[d] = x;
             x = x->right;
+            
         } while (x != H1);
         // find the new max
+        
         H = H1;
         node *temp1 = H1;
         node *temp2 = H1;
@@ -178,7 +216,7 @@ public:
         return found;
     }
 
-    //print helpers
+    // print helpers
     /* void print_queue(std::queue<node *> q)
     {
         while (!q.empty())
@@ -189,50 +227,56 @@ public:
             std::cout << " ";
         }
         std::cout << std::endl;
-    } *///used only to check the queue
- 
+    } */
+    // used only to check the queue
+
     void print_node(node *n)
     {
         cout << "( " << n->key << ", " << n->value << " )";
     }
     // print the heap
 
-    void print_sub_tree(node *temp){
-
+    void print_sub_tree(node *temp)
+    {
     }
 
-    void print_tree(node *temp){
+    void print_tree(node *temp)
+    {
         queue<node *> q;
-        if(temp->parent == NULL && temp->child == NULL){
+        if (temp->parent == NULL && temp->child == NULL)
+        {
             print_node(temp);
-            cout<<endl;
+            cout << endl;
             return;
         }
-        //cout<<"1"<<endl;
+        // cout<<"1"<<endl;
         print_node(temp);
-            cout<<"->";
-            
-            q = store_child_with_grandchild(temp->child);
-            print_sibling(temp->child);
-            cout<<endl;
-            //cout<<"1"<<endl;
-        while(!q.empty()){
-            //cout<<q.front()->key<<endl;
+        cout << "->";
+
+        q = store_child_with_grandchild(temp->child);
+        print_sibling(temp->child);
+        cout << endl;
+        // cout<<"1"<<endl;
+        while (!q.empty())
+        {
+            // cout<<q.front()->key<<endl;
             node *temp1 = q.front();
             q.pop();
             print_tree(temp1);
         }
-        
     }
-    queue<node *> store_child_with_grandchild(node *n){
+    queue<node *> store_child_with_grandchild(node *n)
+    {
         queue<node *> q;
         node *temp = n;
-        do{
-            if(temp->child != NULL){//jodi baccchq thake tahole queue te push korbe
+        do
+        {
+            if (temp->child != NULL)
+            { // jodi baccchq thake tahole queue te push korbe
                 q.push(temp);
             }
             temp = temp->right;
-        }while (temp != n);
+        } while (temp != n);
         return q;
     }
     // print all the sibling including node
@@ -246,11 +290,10 @@ public:
         } while (temp != n);
     }
 
-
-    //Main functions:
+    // Main functions:
 
     // Initializes an empty Fib-Heap
-    //#############1##################
+    // #############1##################
     Fib_heap_max *make_heap()
     {
         Fib_heap_max *H1 = new Fib_heap_max;
@@ -259,14 +302,14 @@ public:
         fill(H1->valueArray, H1->valueArray + pos_max + 1, nullptr);
         return H1;
     }
-    //#############2##################
-    // Checks if the heap is empty
+    // #############2##################
+    //  Checks if the heap is empty
     bool is_empty(Fib_heap_max *H1)
     {
         return H1->H == NULL;
     }
-    //#############3##################
-    // Inserts a node into the heap
+    // #############3##################
+    //  Inserts a node into the heap
     void insert(Fib_heap_max *H1, int key, int value)
     {
         node *_new = new node;
@@ -301,25 +344,26 @@ public:
     }
 
     // Extract max
-    //#############4##################
+    // #############4##################
     node *extract_max(Fib_heap_max *H1)
     {
 
         if (H1->H == NULL)
         {
-            cerr << "The heap is empty" << endl;
+            cout << "The heap is empty" << endl;
             return H1->H;
         }
         else
         {
+            
             node *temp = H1->H; // temp has max node
             node *x = NULL;     // flag
-            node *ptr = temp;//store max in ptr
+            node *ptr = temp;   // store max in ptr
             if (temp->child != NULL)
             {
                 x = temp->child; // x has the child of H1
             }
-            if (x != NULL)//if there is a child
+            if (x != NULL) // if there is a child
             {
                 ptr = x; // ptr has the child of H1
                 // loop the list of children
@@ -341,7 +385,7 @@ public:
                 } while (np != ptr);
             }
             // remove the max node from the root list
-            //regardless of child or not
+            // regardless of child or not
             (temp->left)->right = temp->right;
             (temp->right)->left = temp->left;
             H1->H = temp->right;
@@ -352,7 +396,9 @@ public:
             }
             else
             {
+                
                 H1->H = temp->right;
+                cout<<H1->H->key<<endl;
                 Consolidate(H1->H);
             }
             no_of_nodes--;
@@ -364,23 +410,23 @@ public:
     }
 
     // Increase Key Operation
-    //#############5##################
+    // #############5##################
     void increase_key(Fib_heap_max *H1, int value, int n_k)
     {
         if (H1->H == NULL)
         {
-            cerr << "The heap is empty" << endl;
+            cout << "The heap is empty" << endl;
             return;
         }
         node *node_to_be_increased = Find(H1->H, value);
         if (node_to_be_increased == NULL)
         {
-            cerr << "The node is not in the heap" << endl;
+            cout << "The node is not in the heap" << endl;
             return;
         }
         if (n_k < node_to_be_increased->key)
         {
-            cerr << "The new key is smaller than the current key" << endl;
+            cout << "The new key is smaller than the current key" << endl;
             return;
         }
         node_to_be_increased->key = n_k;
@@ -399,74 +445,104 @@ public:
     }
 
     // Dlt function
-    //#############6##################
+    // #############6##################
     void dlt(Fib_heap_max *H1, int value)
     {
         if (H1->H == NULL)
         {
-            cerr << "The heap is empty" << endl;
+            cout << "The heap is empty" << endl;
             return;
         }
         node *node_to_be_deleted = Find(H1->H, value);
         if (node_to_be_deleted == NULL)
         {
-            cerr << "The node is not in the heap" << endl;
+            cout << "The node is not in the heap" << endl;
             return;
         }
         increase_key(H1, value, pos_max);
         extract_max(H1);
         /* cout << value << " deleted" << endl; */
     }
-    //#############7##################
+    // #############7##################
     Fib_heap_max *meld(Fib_heap_max *H1, Fib_heap_max *H2)
     {
         Fib_heap_max *H3 = make_heap();
+        if (H1->H == NULL && H2->H == NULL)
+        {
+            cout << "Both the heaps are empty" << endl;
+            return H3;
+        }
+        else if (H1->H == NULL)
+        {
+            H3->H = H2->H;
+            H3->no_of_nodes = H2->no_of_nodes;
+            return H3;
+        }
+        else if (H2->H == NULL)
+        {
+            H3->H = H1->H;
+            H3->no_of_nodes = H1->no_of_nodes;
+            return H3;
+        }
         H3->H = H1->H; // make the max of new heap the max of first heap
         // place the entire root list of second heap in the root list of the new heap
         (H3->H->left)->right = H2->H->right;
         (H2->H->right)->left = H3->H->left;
         (H3->H->left) = H2->H;
         (H2->H->right) = H3->H;
+
         if (H1->H == NULL || (H2->H != NULL && H2->H->key > H1->H->key))
         {
             H3->H = H2->H;
         }
         H3->no_of_nodes = H1->no_of_nodes + H2->no_of_nodes;
+        // copy all the nodes from H1 and H2 to the array of H3
+        //  Assuming both H1 and H2 are instances of Fib_heap_max
+        //copyValueArray(H3->valueArray, H1->valueArray, pos_max + 1);
+        //copyValueArray(H3->valueArray, H2->valueArray, pos_max + 1);
+        for(int i = 0; i < pos_max + 1; i++){
+            if(H1->valueArray[i] != nullptr){
+                H3->valueArray[i] = H1->valueArray[i];
+            }
+            if(H2->valueArray[i] != nullptr){
+                H3->valueArray[i] = H2->valueArray[i];
+            }
+        }
         return H3;
         /* cout << "Heaps Merged" << endl; */
     }
 
     // find max
-    //#############8##################
+    // #############8##################
     node *find_max(Fib_heap_max *H1)
     {
         return H1->H;
     }
 
-    //print the heap
-    //#############9##################
-    
-    void print(Fib_heap_max *H1)
+    // print the heap
+    // #############9##################
+
+    /* void print(Fib_heap_max *H1)
     {
-        if(H1->H == NULL){
-            cerr << "The heap is empty" << endl;
+        if (H1->H == NULL)
+        {
+            cout << "The heap is empty" << endl;
         }
-        else{
+        else
+        {
             node *temp = H1->H;
             int i = 0;
             do
             {
                 ++i;
-                cout<<"Tree "<<i<<" : ";
+                cout << "Tree " << i << " : ";
                 print_tree(temp);
                 temp = temp->right;
             } while (temp != H1->H);
         }
-        cout<<endl;
-        cout<<endl;
-    }
-    
-    
+        cout << endl;
+        cout << endl;
+    } */
 };
 
 #endif
