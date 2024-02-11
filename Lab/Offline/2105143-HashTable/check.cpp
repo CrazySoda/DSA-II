@@ -5,7 +5,32 @@
 #include <cstdlib> // For rand()
 
 using namespace std;
-
+// check if it is prime
+bool is_prime(int n)
+{
+    if (n <= 1)
+        return false;
+    if (n <= 3)
+        return true;
+    if (n % 2 == 0 || n % 3 == 0)
+        return false;
+    for (int i = 5; i * i <= n; i += 6)
+    {
+        if (n % i == 0 || n % (i + 2) == 0)
+            return false;
+    }
+    return true;
+}
+// generate the next prime
+int next_prime(int prime)
+{
+    int next = prime + 1;
+    while (!is_prime(next))
+    {
+        next++;
+    }
+    return next;
+}
 // Function to generate random words
 vector<string> generate_words(int n) {
     vector<string> words;
@@ -51,6 +76,7 @@ int main() {
     for (const string &word : words) {
         cout << word << endl;
     }
+    cout<<next_prime(410)<<endl;
 
     return 0;
 }

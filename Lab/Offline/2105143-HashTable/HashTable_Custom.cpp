@@ -2,6 +2,8 @@
 using namespace std;
 const long long HASH_MOD = 1'000'000'007; // very big prime number
 
+#define C1_VAL 71
+#define C2_VAL 421
 // populate an array filled with only unique words and delete the duplicate ones
 //  Function to generate random words
 vector<string> generate_words(int n)
@@ -139,6 +141,11 @@ uint32_t auxHash(const string &key, int N)
     }
     return (~crc);
 }
+// customHash
+uint32_t customHash(const string &key, int i, int N, uint32_t (*Hash)(const string &, int), int C1, int C2)
+{
+    return (Hash(key, N) + C1 * i * auxHash(key, N) + C2 * i * i) % N;
+}
 // Hash Table
 class HashTable
 {
@@ -149,23 +156,20 @@ public:
     vector<pair<string, int>> table;
     HashTable(int size)
     {
-        this->no_of_collisions= 0;
+        this->no_of_collisions = 0;
         this->no_of_elements = 0;
         this->size = size;
         table.resize(next_prime(size));
         cout << table.size() << endl;
         cout << "table created" << endl;
     }
-    ~HashTable(){
-        cout<<"HashTable destroyed"<<endl;
-    }
-    uint32_t doubleHash(const string &key, int i, int N, uint32_t (*Hash)(const string &, int)) const
+    ~HashTable()
     {
-        return (Hash(key, N) + i * auxHash(key, N)) % N;
+        cout << "HashTable destroyed" << endl;
     }
-    void insert(const string &key, int value,uint32_t (*Hash)(const string &, int))
+    void insert(const string &key, int value, uint32_t (*Hash)(const string &, int))
     {
-        //cout << "inserting" << endl;
+        // cout << "inserting" << endl;
         if (no_of_elements == size)
         {
             cout << "Skipping insertion for key: " << key << ", as the table is filled." << endl;
@@ -174,33 +178,35 @@ public:
         int index;
         for (int i = 0; i < size; i++)
         {
-            index = doubleHash(key, i, size, Hash);
+            index = customHash(key, i, size, Hash1, C1_VAL, C2_VAL);
             if (table[index].first.empty())
             {
                 table[index].first = key;
                 table[index].second = value;
                 no_of_elements++;
                 return;
-            }else no_of_collisions++;
+            }
+            else
+                no_of_collisions++;
         }
     }
 
-    void insert(const vector<string> &words,uint32_t (*Hash1)(const string &, int))
+    void insert(const vector<string> &words, uint32_t (*Hash)(const string &, int))
     {
         for (int i = 0; i < words.size(); ++i)
         {
-            insert(words[i], i,Hash1);
+            insert(words[i], i, Hash);
         }
     }
 
-    int search(const string key,uint32_t (*Hash)(const string &, int)) const
+    int search(const string key) const
     {
         int no_of_probs = 0;
         cout << "searching" << endl;
         int index, i;
         for (i = 0; i < size; ++i)
         {
-            index = doubleHash(key, i, size, Hash);
+            index = customHash(key, i, size, Hash1, C1_VAL, C2_VAL);
             if (table[index].first == key)
                 break;
             if (i == size)
@@ -212,41 +218,42 @@ public:
         no_of_probs += i + 1;
         return no_of_probs;
     }
-    double averageProbing(const vector<string> &selected_words, uint32_t (*Hash)(const string &,int)) const {
+    double averageProbing(const vector<string> &selected_words) const
+    {
         int total_probes = 0;
-        for (const string &word : selected_words) {
-            int probe = search(word,Hash);
+        for (const string &word : selected_words)
+        {
+            int probe = search(word);
             total_probes += probe;
         }
         double average_probe = static_cast<double>(total_probes) / selected_words.size();
         return average_probe;
     }
-    void delete_key(const string &key,uint32_t (*Hash)(const string &, int))
+    void delete_key(const string &key, uint32_t (*Hash)(const string &, int))
     {
         int index;
         for (int i = 0; i < size; ++i)
         {
-            index = doubleHash(key, i, size, Hash);
+            index = customHash(key, i, size, Hash1, C1_VAL, C2_VAL);
             if (table[index].first == key)
                 break;
             if (i == size)
             {
                 cout << "Key '" << key << "' not found in the hash table." << endl;
-                return ;
+                return;
             }
         }
         table[index].first = "";
         table[index].second = 0;
-        //cout<<"Key deleted"<<endl;
+        // cout<<"Key deleted"<<endl;
     }
     void delete_words(const vector<string> &words, uint32_t (*Hash)(const string &, int))
     {
         for (const string &word : words)
         {
-            delete_key(word,Hash);
+            delete_key(word, Hash);
         }
-    }
-
+    }   
 
     void show()
     {
@@ -259,19 +266,19 @@ public:
 
 int main()
 {
-    freopen("output_dh.txt", "w", stdout);
+    freopen("output_ch.txt", "w", stdout);
     HashTable ht(5000);
     vector<string> words = generate_unique_words(10000);
     vector<string> selected_words = select_random_words(words, 1000);
     vector<string> to_dlt_words = select_random_words(words, 1000);
     cout << "Generated words: \n";
     show_generated_words_with_index(words);
-    ht.insert(words,Hash);
-    int avgprob = ht.averageProbing(selected_words,Hash);
+    ht.insert(words, Hash1);
+    int avgprob = ht.averageProbing(selected_words);
     cout << "Average Probes: " << avgprob << endl;
     cout << "Hash Table: \n";
-    cout<<"Maximum Collisions: "<<ht.no_of_collisions<<"\n";
-    ht.delete_words(to_dlt_words,Hash);
+    cout << "Maximum Collisions: " << ht.no_of_collisions << "\n";
+    ht.delete_words(to_dlt_words,Hash1);
     ht.show();
     return 0;
 }

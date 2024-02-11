@@ -1,0 +1,15 @@
+Average Probing: 1.52
+max_bucket_size before rehashing: 8
+max_bucket_size after rehashing: 9
+max_bucket_size before rehashing: 9
+max_bucket_size after rehashing: 12
+max_bucket_size before rehashing: 12
+max_bucket_size after rehashing: 18
+max_bucket_size before rehashing: 18
+max_bucket_size after rehashing: 30
+max_bucket_size before rehashing: 30
+max_bucket_size after rehashing: 51
+max_bucket_size before rehashing: 50
+max_bucket_size after rehashing: 85
+0Total Collisions: 156
+hash_table destroyed
