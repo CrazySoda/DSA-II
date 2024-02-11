@@ -1,6 +1,6 @@
+//Created by : CrazySoda
 #include <bits/stdc++.h>
 using namespace std;
-const long long HASH_MOD = 1'000'000'007; // very big prime number
 
 #define C1_VAL 71
 #define C2_VAL 421
@@ -98,7 +98,7 @@ uint32_t Hash1(const string &s, int mod)
 {
     // djb2 hash function by Dan Bernstein
     // http://www.cse.yorku.ca/~oz/hash.html
-    long long hash = 5381; // keep this large then if the table length is increased it will generate different result
+    long long hash = 5381; 
     for (auto &c : s)
     {
         hash = (((hash << 5) + (hash)) + c); // valid
@@ -161,24 +161,24 @@ public:
         this->size = size;
         table.resize(next_prime(size));
         cout << table.size() << endl;
-        cout << "table created" << endl;
+        //cout << "table created" << endl;
     }
     ~HashTable()
     {
-        cout << "HashTable destroyed" << endl;
+        //cout << "HashTable destroyed" << endl;
     }
     void insert(const string &key, int value, uint32_t (*Hash)(const string &, int))
     {
         // cout << "inserting" << endl;
         if (no_of_elements == size)
         {
-            cout << "Skipping insertion for key: " << key << ", as the table is filled." << endl;
+            //cout << "Skipping insertion for key: " << key << ", as the table is filled." << endl;
             return;
         }
         int index;
         for (int i = 0; i < size; i++)
         {
-            index = customHash(key, i, size, Hash1, C1_VAL, C2_VAL);
+            index = customHash(key, i, size, Hash, C1_VAL, C2_VAL);
             if (table[index].first.empty())
             {
                 table[index].first = key;
@@ -199,31 +199,31 @@ public:
         }
     }
 
-    int search(const string key) const
+    int search(const string key,uint32_t (*Hash)(const string &, int)) const
     {
         int no_of_probs = 0;
-        cout << "searching" << endl;
+        //cout << "searching" << endl;
         int index, i;
         for (i = 0; i < size; ++i)
         {
-            index = customHash(key, i, size, Hash1, C1_VAL, C2_VAL);
+            index = customHash(key, i, size, Hash, C1_VAL, C2_VAL);
             if (table[index].first == key)
                 break;
             if (i == size)
             {
-                cout << "Key '" << key << "' not found in the hash table." << endl;
+                //cout << "Key '" << key << "' not found in the hash table." << endl;
                 return 0;
             }
         }
         no_of_probs += i + 1;
         return no_of_probs;
     }
-    double averageProbing(const vector<string> &selected_words) const
+    double averageProbing(const vector<string> &selected_words,uint32_t (*Hash)(const string &, int)) const
     {
         int total_probes = 0;
         for (const string &word : selected_words)
         {
-            int probe = search(word);
+            int probe = search(word,Hash);
             total_probes += probe;
         }
         double average_probe = static_cast<double>(total_probes) / selected_words.size();
@@ -234,12 +234,12 @@ public:
         int index;
         for (int i = 0; i < size; ++i)
         {
-            index = customHash(key, i, size, Hash1, C1_VAL, C2_VAL);
+            index = customHash(key, i, size, Hash, C1_VAL, C2_VAL);
             if (table[index].first == key)
                 break;
             if (i == size)
             {
-                cout << "Key '" << key << "' not found in the hash table." << endl;
+                //cout << "Key '" << key << "' not found in the hash table." << endl;
                 return;
             }
         }
@@ -253,7 +253,7 @@ public:
         {
             delete_key(word, Hash);
         }
-    }   
+    }
 
     void show()
     {
@@ -267,18 +267,78 @@ public:
 int main()
 {
     freopen("output_ch.txt", "w", stdout);
-    HashTable ht(5000);
+    //10'000 random words
     vector<string> words = generate_unique_words(10000);
-    vector<string> selected_words = select_random_words(words, 1000);
-    vector<string> to_dlt_words = select_random_words(words, 1000);
-    cout << "Generated words: \n";
-    show_generated_words_with_index(words);
-    ht.insert(words, Hash1);
-    int avgprob = ht.averageProbing(selected_words);
+    vector<string> selected_words = select_random_words(words, 1000);//select 10%
+    vector<string> to_dlt_words = select_random_words(words, 1000);//select 10%
+    cout<<"For Hash"<<endl;
+    cout<<"Table size 5000"<<endl;
+    HashTable ht(5000);
+    //cout << "Generated words: \n";
+    //show_generated_words_with_index(words);
+    ht.insert(words, Hash);
+    int avgprob = ht.averageProbing(selected_words, Hash);
     cout << "Average Probes: " << avgprob << endl;
-    cout << "Hash Table: \n";
+    //cout << "Hash Table: \n";
     cout << "Maximum Collisions: " << ht.no_of_collisions << "\n";
-    ht.delete_words(to_dlt_words,Hash1);
-    ht.show();
+    ht.delete_words(to_dlt_words, Hash);
+    //ht.show();
+    cout<<endl<<endl;
+    cout<<"Table Size 10'000"<<endl;
+    HashTable ht1(10000);
+    //cout << "Generated words: \n";
+    //show_generated_words_with_index(words);
+    ht1.insert(words, Hash);
+    int avgprob1 = ht1.averageProbing(selected_words, Hash);
+    cout << "Average Probes: " << avgprob1 << endl;
+    //cout << "Hash Table: \n";
+    cout << "Maximum Collisions: " << ht1.no_of_collisions << "\n";
+    ht1.delete_words(to_dlt_words, Hash);
+    cout<<endl<<endl;
+    cout<<"Table Size 20'000"<<endl;
+    HashTable ht2(20000);
+    //cout << "Generated words: \n";
+    //show_generated_words_with_index(words);
+    ht2.insert(words, Hash);
+    int avgprob2 = ht2.averageProbing(selected_words, Hash);
+    cout << "Average Probes: " << avgprob << endl;
+    //cout << "Hash Table: \n";
+    cout << "Maximum Collisions: " << ht2.no_of_collisions << "\n";
+    ht2.delete_words(to_dlt_words, Hash);
+    cout<<endl<<endl<<endl;
+    cout<<"For Hash1"<<endl;
+    cout<<"Table size 5000"<<endl;
+    HashTable ht3(5000);
+    //cout << "Generated words: \n";
+    //show_generated_words_with_index(words);
+    ht3.insert(words, Hash1);
+    int avgprob3 = ht3.averageProbing(selected_words, Hash1);
+    cout << "Average Probes: " << avgprob3 << endl;
+    //cout << "Hash Table: \n";
+    cout << "Maximum Collisions: " << ht3.no_of_collisions << "\n";
+    ht3.delete_words(to_dlt_words, Hash1);
+    //ht.show();
+    cout<<endl<<endl;
+    cout<<"Table Size 10'000"<<endl;
+    HashTable ht4(10000);
+    //cout << "Generated words: \n";
+    //show_generated_words_with_index(words);
+    ht4.insert(words, Hash1);
+    int avgprob4 = ht4.averageProbing(selected_words, Hash1);
+    cout << "Average Probes: " << avgprob4 << endl;
+    //cout << "Hash Table: \n";
+    cout << "Maximum Collisions: " << ht4.no_of_collisions << "\n";
+    ht4.delete_words(to_dlt_words, Hash1);
+    cout<<endl<<endl;
+    cout<<"Table Size 20'000"<<endl;
+    HashTable ht5(20000);
+    //cout << "Generated words: \n";
+    //show_generated_words_with_index(words);
+    ht5.insert(words, Hash1);
+    int avgprob5 = ht5.averageProbing(selected_words, Hash1);
+    cout << "Average Probes: " << avgprob5 << endl;
+    //cout << "Hash Table: \n";
+    cout << "Maximum Collisions: " << ht5.no_of_collisions << "\n";
+    ht5.delete_words(to_dlt_words, Hash1);
     return 0;
 }

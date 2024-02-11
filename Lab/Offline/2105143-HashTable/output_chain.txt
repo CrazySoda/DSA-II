@@ -1,15 +1,312 @@
-Average Probing: 1.52
-max_bucket_size before rehashing: 8
-max_bucket_size after rehashing: 9
+For Hash
+
+
+For size - 5'000
+Total Collisions: 4297
+Average Probing: 2.017
+Calling Erase Function :
+Rehashing
+Average Probe Before Hashing: 1.765
 max_bucket_size before rehashing: 9
+Load Factor before Hashing :1.97881
 max_bucket_size after rehashing: 12
+Load Factor before Hashing :3.95842
+Average Probe Before Hashing: 2.683
+
+
+Rehashing
+Average Probe Before Hashing: 2.369
 max_bucket_size before rehashing: 12
+Load Factor before Hashing :3.91843
 max_bucket_size after rehashing: 18
+Load Factor before Hashing :7.84
+Average Probe Before Hashing: 3.828
+
+
+Rehashing
+Average Probe Before Hashing: 3.285
 max_bucket_size before rehashing: 18
-max_bucket_size after rehashing: 30
+Load Factor before Hashing :7.76
+max_bucket_size after rehashing: 32
+Load Factor before Hashing :15.52
+Average Probe Before Hashing: 5.99
+
+
+Rehashing
+Average Probe Before Hashing: 5.066
 max_bucket_size before rehashing: 30
+Load Factor before Hashing :15.36
 max_bucket_size after rehashing: 51
+Load Factor before Hashing :30.7692
+Average Probe Before Hashing: 9.368
+
+
+Rehashing
+Average Probe Before Hashing: 7.56
+max_bucket_size before rehashing: 51
+Load Factor before Hashing :30.4487
+max_bucket_size after rehashing: 86
+Load Factor before Hashing :60.8974
+Average Probe Before Hashing: 14.691
+
+
+For size - 10'000
+Total Collisions: 6369
+Average Probing: 1.52
+Calling Erase Function :
+Rehashing
+Average Probe Before Hashing: 1.33
+max_bucket_size before rehashing: 8
+Load Factor before Hashing :0.989307
+max_bucket_size after rehashing: 9
+Load Factor before Hashing :1.97881
+Average Probe Before Hashing: 1.731
+
+
+Rehashing
+Average Probe Before Hashing: 1.536
+max_bucket_size before rehashing: 9
+Load Factor before Hashing :1.95882
+max_bucket_size after rehashing: 12
+Load Factor before Hashing :3.91843
+Average Probe Before Hashing: 2.369
+
+
+Rehashing
+Average Probe Before Hashing: 2.044
+max_bucket_size before rehashing: 12
+Load Factor before Hashing :3.87845
+max_bucket_size after rehashing: 18
+Load Factor before Hashing :7.76
+Average Probe Before Hashing: 3.285
+
+
+Rehashing
+Average Probe Before Hashing: 2.744
+max_bucket_size before rehashing: 18
+Load Factor before Hashing :7.68
+max_bucket_size after rehashing: 30
+Load Factor before Hashing :15.36
+Average Probe Before Hashing: 5.066
+
+
+Rehashing
+Average Probe Before Hashing: 4.121
+max_bucket_size before rehashing: 30
+Load Factor before Hashing :15.2
+max_bucket_size after rehashing: 51
+Load Factor before Hashing :30.4487
+Average Probe Before Hashing: 7.56
+
+
+Rehashing
+Average Probe Before Hashing: 5.76
 max_bucket_size before rehashing: 50
+Load Factor before Hashing :30.1282
 max_bucket_size after rehashing: 85
-0Total Collisions: 156
+Load Factor before Hashing :60.2564
+Average Probe Before Hashing: 11.225
+
+
+For size - 20'000
+Total Collisions: 7868
+Average Probing: 1.274
+Calling Erase Function :
+Rehashing
+Average Probe Before Hashing: 1.125
+max_bucket_size before rehashing: 5
+Load Factor before Hashing :0.494728
+max_bucket_size after rehashing: 7
+Load Factor before Hashing :0.989505
+Average Probe Before Hashing: 1.324
+
+
+Rehashing
+Average Probe Before Hashing: 1.157
+max_bucket_size before rehashing: 6
+Load Factor before Hashing :0.97951
+max_bucket_size after rehashing: 9
+Load Factor before Hashing :1.95922
+Average Probe Before Hashing: 1.551
+
+
+Rehashing
+Average Probe Before Hashing: 1.352
+max_bucket_size before rehashing: 9
+Load Factor before Hashing :1.93922
+max_bucket_size after rehashing: 12
+Load Factor before Hashing :3.87845
+Average Probe Before Hashing: 2.013
+
+
+Rehashing
+Average Probe Before Hashing: 1.694
+max_bucket_size before rehashing: 12
+Load Factor before Hashing :3.83846
+max_bucket_size after rehashing: 18
+Load Factor before Hashing :7.68
+Average Probe Before Hashing: 2.744
+
+
+Rehashing
+Average Probe Before Hashing: 2.237
+max_bucket_size before rehashing: 18
+Load Factor before Hashing :7.6
+max_bucket_size after rehashing: 30
+Load Factor before Hashing :15.2
+Average Probe Before Hashing: 4.122
+
+
+Rehashing
+Average Probe Before Hashing: 3.224
+max_bucket_size before rehashing: 30
+Load Factor before Hashing :15.04
+max_bucket_size after rehashing: 50
+Load Factor before Hashing :30.1282
+Average Probe Before Hashing: 5.761
+
+
+Rehashing
+Average Probe Before Hashing: 4.05
+max_bucket_size before rehashing: 48
+Load Factor before Hashing :29.8077
+max_bucket_size after rehashing: 83
+Load Factor before Hashing :59.6154
+Average Probe Before Hashing: 8.025
+
+
+For size - 5'000
+Total Collisions: 4316
+Average Probing: 1.96
+Calling Erase Function :
+Rehashing
+Average Probe Before Hashing: 1.729
+max_bucket_size before rehashing: 8
+Load Factor before Hashing :1.97881
+max_bucket_size after rehashing: 13
+Load Factor before Hashing :3.95842
+Average Probe Before Hashing: 2.616
+
+
+Rehashing
+Average Probe Before Hashing: 2.297
+max_bucket_size before rehashing: 13
+Load Factor before Hashing :3.91843
+max_bucket_size after rehashing: 18
+Load Factor before Hashing :7.84
+Average Probe Before Hashing: 3.798
+
+
+Rehashing
+Average Probe Before Hashing: 3.299
+max_bucket_size before rehashing: 17
+Load Factor before Hashing :7.76
+max_bucket_size after rehashing: 29
+Load Factor before Hashing :15.52
+Average Probe Before Hashing: 5.868
+
+
+Rehashing
+Average Probe Before Hashing: 4.963
+max_bucket_size before rehashing: 29
+Load Factor before Hashing :15.36
+max_bucket_size after rehashing: 48
+Load Factor before Hashing :30.7692
+Average Probe Before Hashing: 9.408
+
+
+Rehashing
+Average Probe Before Hashing: 7.469
+max_bucket_size before rehashing: 46
+Load Factor before Hashing :30.4487
+max_bucket_size after rehashing: 79
+Load Factor before Hashing :60.8974
+Average Probe Before Hashing: 15.111
+
+
+Rehashing
+Average Probe Before Hashing: 11.716
+max_bucket_size before rehashing: 79
+Load Factor before Hashing :60.2564
+max_bucket_size after rehashing: 147
+Load Factor before Hashing :120.513
+Average Probe Before Hashing: 22.489
+
+
+For size - 10'000
+Total Collisions: 6358
+Average Probing: 1.494
+Calling Erase Function :
+Rehashing
+Average Probe Before Hashing: 1.304
+max_bucket_size before rehashing: 6
+Load Factor before Hashing :0.989307
+max_bucket_size after rehashing: 8
+Load Factor before Hashing :1.97881
+Average Probe Before Hashing: 1.744
+
+
+Rehashing
+Average Probe Before Hashing: 1.534
+max_bucket_size before rehashing: 8
+Load Factor before Hashing :1.95882
+max_bucket_size after rehashing: 13
+Load Factor before Hashing :3.91843
+Average Probe Before Hashing: 2.297
+
+
+Rehashing
+Average Probe Before Hashing: 1.972
+max_bucket_size before rehashing: 13
+Load Factor before Hashing :3.87845
+max_bucket_size after rehashing: 17
+Load Factor before Hashing :7.76
+Average Probe Before Hashing: 3.299
+
+
+Rehashing
+Average Probe Before Hashing: 2.76
+max_bucket_size before rehashing: 17
+Load Factor before Hashing :7.68
+max_bucket_size after rehashing: 29
+Load Factor before Hashing :15.36
+Average Probe Before Hashing: 4.963
+
+
+Rehashing
+Average Probe Before Hashing: 4.025
+max_bucket_size before rehashing: 29
+Load Factor before Hashing :15.2
+max_bucket_size after rehashing: 46
+Load Factor before Hashing :30.4487
+Average Probe Before Hashing: 7.469
+
+
+Rehashing
+Average Probe Before Hashing: 5.851
+max_bucket_size before rehashing: 46
+Load Factor before Hashing :30.1282
+max_bucket_size after rehashing: 79
+Load Factor before Hashing :60.2564
+Average Probe Before Hashing: 11.716
+
+
+Rehashing
+Average Probe Before Hashing: 8.317
+max_bucket_size before rehashing: 79
+Load Factor before Hashing :59.6154
+max_bucket_size after rehashing: 146
+Load Factor before Hashing :119.231
+Average Probe Before Hashing: 16.152
+
+
+For size - 20'000
+Total Collisions: 7869
+Average Probing: 1.238
+Calling Erase Function :
+hash_table destroyed
+hash_table destroyed
+hash_table destroyed
+hash_table destroyed
+hash_table destroyed
 hash_table destroyed

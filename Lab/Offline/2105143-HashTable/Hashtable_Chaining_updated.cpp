@@ -4,7 +4,7 @@
 using namespace std;
 vector<string> input_words;
 
-const long long HASH_MOD = 1'000'000'007; // very big prime number
+
 
 // populate an array filled with only unique words and delete the duplicate ones
 //  Function to generate random words
@@ -68,6 +68,9 @@ void show_generated_words_with_index(vector<string> &words)
         cout << i << ": " << words[i] << endl;
     }
 }
+vector<string> generated_words = generate_unique_words(10000);
+// show_generated_words_with_index(generated_words);
+vector<string> selected_words = select_random_words(generated_words, 1000);
 // Hash Function from a good source
 uint32_t Hash(const string &s, int mod)
 {
@@ -80,12 +83,14 @@ uint32_t Hash(const string &s, int mod)
     }
     return (uint32_t)hash;
 }
-uint32_t Hash1(const string &key, int N) {
+uint32_t Hash1(const string &key, int N)
+{
     // Jenkins One At a Time Hash
     // http://en.wikipedia.org/wiki/Jenkins_hash_function
 
     uint32_t hash = 0;
-    for (char c : key) {
+    for (char c : key)
+    {
         hash += c;
         hash += (hash << 10);
         hash ^= (hash >> 6);
@@ -149,12 +154,12 @@ public:
         cout << "hash_table destroyed" << endl;
     }
 
-    void insert(const vector<string> &words,uint32_t (*Hash)(const string &, int))
+    void insert(const vector<string> &words, uint32_t (*Hash)(const string &, int))
     {
 
         for (int i = 1; i < words.size(); ++i)
         {
-            insert(words[i], i,Hash);
+            insert(words[i], i, Hash);
             // cout<<"inserted"<<endl;
             if (i % 100 == 0)
             {
@@ -162,17 +167,20 @@ public:
                 // cout<<"max_size before rehashing: "<<max_size<<endl;
                 while (max_size > max_bucket_size)
                 {
-                    //cout << "rehashing" << endl;
-                    rehash(2,Hash);
+                    // cout << "rehashing" << endl;
+                    rehash(2, Hash);
                     max_size = size_of_longest_chain();
                 }
                 // cout<<"max_size after rehashing: "<<max_size<<endl;
             }
         }
     }
-    void rehash(double n,uint32_t (*Hash)(const string &, int)  )
+    void rehash(double n, uint32_t (*Hash)(const string &, int))
     {
+        cout<<"Rehashing"<<endl;
+        cout << "Average Probe Before Hashing: " << averageProbing(selected_words,Hash) << endl;
         cout << "max_bucket_size before rehashing: " << size_of_longest_chain() << endl;
+        cout << "Load Factor before Hashing :" << load_factor() << endl;
         int new_size = size * n;
         vector<list<pair<string, int>>> new_table(new_size);
         for (int i = 0; i < size; i++)
@@ -186,15 +194,18 @@ public:
         this->table = move(new_table);
         this->size = new_size;
         cout << "max_bucket_size after rehashing: " << size_of_longest_chain() << endl;
+        cout << "Load Factor before Hashing :" << load_factor() << endl;
+        cout << "Average Probe Before Hashing: " << averageProbing(selected_words,Hash) << endl;
+        cout<<endl<<endl;
     }
-    void insert(const string &s, int index,uint32_t (*Hash)(const string &, int))
+    void insert(const string &s, int index, uint32_t (*Hash)(const string &, int))
     {
         int hash_index = Hash(s, size);
         // cout<<"hash_index: "<<hash_index<<endl;
         table[hash_index].push_back({s, index});
         no_of_elements++;
     }
-    
+
     int size_of_longest_chain()
     {
         int max_size = 0;
@@ -205,15 +216,15 @@ public:
         return max_size;
     }
 
-    void erase_all(const vector<string> &strings_to_erase,uint32_t (*Hash)(const string &, int))
+    void erase_all(const vector<string> &strings_to_erase, uint32_t (*Hash)(const string &, int))
     {
         for (const string &s : strings_to_erase)
         {
-            erase(s,Hash);
+            erase(s, Hash);
         }
     }
 
-    void erase(const string &s,uint32_t (*Hash)(const string &,int ))
+    void erase(const string &s, uint32_t (*Hash)(const string &, int))
     {
         int index = Hash(s, size);
         for (auto it = table[index].begin(); it != table[index].end(); it++)
@@ -232,17 +243,17 @@ public:
                         if (longest_chain_length < 0.8 * this->max_bucket_size)
                         {
 
-                            rehash(0.5,Hash);
+                            rehash(0.5, Hash);
                         }
                     } while (this->size > limit);
                 }
-                //cout << "Element erased!" << endl;
+                // cout << "Element erased!" << endl;
                 return;
             }
         }
     }
 
-    int search(const string &s, uint32_t (*Hash)(const string &,int)) const
+    int search(const string &s, uint32_t (*Hash)(const string &, int)) const
     {
 
         int index = Hash(s, size);
@@ -254,24 +265,29 @@ public:
             probe++;
             if (p.first == s)
             {
-                //cout << "Element found at probe " << probe << "!" << endl;
+                // cout << "Element found at probe " << probe << "!" << endl;
                 return probe;
             }
         }
 
-        //cout << "Element not found!" << endl;
+        // cout << "Element not found!" << endl;
         return 0;
     }
-    double averageProbing(const vector<string> &selected_words,uint32_t (*Hash)(const string &,int )) const {
+    double averageProbing(const vector<string> &selected_words, uint32_t (*Hash)(const string &, int)) const
+    {
         int total_probes = 0;
-        for (const string &word : selected_words) {
-            int probe = search(word,Hash);
+        for (const string &word : selected_words)
+        {
+            int probe = search(word, Hash);
             total_probes += probe;
         }
         double average_probe = static_cast<double>(total_probes) / selected_words.size();
         return average_probe;
     }
-
+    double load_factor()
+    {
+        return static_cast<double>(no_of_elements) / size;
+    }
 
     void show()
     {
@@ -291,7 +307,7 @@ int count_collisions(const vector<list<pair<string, int>>> &table)
     int total_collisions = 0;
     for (const auto &chain : table)
     {
-        if (!chain.empty()) 
+        if (!chain.empty())
         {
             total_collisions++;
         }
@@ -299,27 +315,66 @@ int count_collisions(const vector<list<pair<string, int>>> &table)
     return total_collisions;
 }
 
-
-
 int main()
 {
 
     freopen("output_chain.txt", "w", stdout);
-    vector<string> generated_words = generate_unique_words(10000);
-    // show_generated_words_with_index(generated_words);
-    vector<string> selected_words = select_random_words(generated_words, 1000);
-    //show_generated_words_with_index(selected_words);
-    HashTable hash_table(100, 10000);
-    hash_table.insert(generated_words,Hash);
-    //hash_table.show();
-
-    //cout<<hash_table.search(selected_words[5]);
-    cout<<"Average Probing: "<<hash_table.averageProbing(selected_words,Hash)<<endl;
-    hash_table.erase_all(selected_words,Hash);
-    // hash_table.erase(selected_words[5]);
-    cout<<hash_table.search(selected_words[5],Hash);
+    cout<<"For Hash"<<endl<<endl<<endl;
+    // show_generated_words_with_index(selected_words);
+    //5'000
+    cout<<"For size - 5'000"<<endl;
+    HashTable hash_table(100, 5000);
+    hash_table.insert(generated_words, Hash);
     int total_collisions = count_collisions(hash_table.table);
     cout << "Total Collisions: " << total_collisions << endl;
-
+    cout << "Average Probing: " << hash_table.averageProbing(selected_words, Hash) << endl;
+    cout<<"Calling Erase Function :"<<endl;
+    hash_table.erase_all(selected_words, Hash);
+    //10'000
+    cout<<"For size - 10'000"<<endl;
+    HashTable hash_table1(100, 10000);
+    hash_table1.insert(generated_words, Hash);
+    int total_collisions1 = count_collisions(hash_table1.table);
+    cout << "Total Collisions: " << total_collisions1 << endl;
+    cout << "Average Probing: " << hash_table1.averageProbing(selected_words, Hash) << endl;
+    cout<<"Calling Erase Function :"<<endl;
+    hash_table1.erase_all(selected_words, Hash);
+    //20'000
+    cout<<"For size - 20'000"<<endl;
+    HashTable hash_table2(100, 20000);
+    hash_table2.insert(generated_words, Hash);
+    int total_collisions2 = count_collisions(hash_table2.table);
+    cout << "Total Collisions: " << total_collisions2 << endl;
+    cout << "Average Probing: " << hash_table2.averageProbing(selected_words, Hash) << endl;
+    cout<<"Calling Erase Function :"<<endl;
+    hash_table2.erase_all(selected_words, Hash);
+    //For Hash 1
+    //5'000
+    cout<<"For size - 5'000"<<endl;
+    HashTable hash_table3(100, 5000);
+    hash_table3.insert(generated_words, Hash1);
+    int total_collisions3 = count_collisions(hash_table3.table);
+    cout << "Total Collisions: " << total_collisions3 << endl;
+    cout << "Average Probing: " << hash_table3.averageProbing(selected_words, Hash1) << endl;
+    cout<<"Calling Erase Function :"<<endl;
+    hash_table3.erase_all(selected_words, Hash1);
+    //10'000
+    cout<<"For size - 10'000"<<endl;
+    HashTable hash_table4(100, 10000);
+    hash_table4.insert(generated_words, Hash1);
+    int total_collisions4 = count_collisions(hash_table4.table);
+    cout << "Total Collisions: " << total_collisions4 << endl;
+    cout << "Average Probing: " << hash_table4.averageProbing(selected_words, Hash1) << endl;
+    cout<<"Calling Erase Function :"<<endl;
+    hash_table4.erase_all(selected_words, Hash1);
+    //20'000
+    cout<<"For size - 20'000"<<endl;
+    HashTable hash_table5(100, 20000);
+    hash_table5.insert(generated_words, Hash1);
+    int total_collisions5 = count_collisions(hash_table5.table);
+    cout << "Total Collisions: " << total_collisions5 << endl;
+    cout << "Average Probing: " << hash_table5.averageProbing(selected_words, Hash1) << endl;
+    cout<<"Calling Erase Function :"<<endl;
+    hash_table.erase_all(selected_words, Hash1);
     return 0;
 }
